@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -36,6 +36,14 @@ import { t } from "@/lib/i18n";
 type AppState = "idle" | "uploading" | "shared" | "fetching" | "received";
 
 export default function Home() {
+  return (
+    <Suspense>
+      <HomeInner />
+    </Suspense>
+  );
+}
+
+function HomeInner() {
   const [appState, setAppState] = useState<AppState>("idle");
   const [secure, setSecure] = useState(false);
   const [pasteText, setPasteText] = useState("");
