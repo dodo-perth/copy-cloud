@@ -148,10 +148,10 @@ function HomeInner() {
   );
 
   const handleCodeComplete = useCallback(async (code: string) => {
-    if (code.length !== 6) return;
+    if (!code || code.length < 6) return;
     setAppState("fetching");
     try {
-      const room = await getRoom(code.toUpperCase());
+      const room = await getRoom(code);
       setReceivedRoom(room);
       setAppState("received");
     } catch {
@@ -161,10 +161,13 @@ function HomeInner() {
     }
   }, []);
 
+  // Auto-fetch from ?code= URL param (QR scan landing)
   useEffect(() => {
     const initialCode = searchParams.get("code");
-    if (initialCode && initialCode.length === 6) {
-      setCodeInput(initialCode.toUpperCase());
+    if (initialCode && initialCode.length >= 6) {
+      if (initialCode.length === 6) {
+        setCodeInput(initialCode.toUpperCase());
+      }
       handleCodeComplete(initialCode);
     }
   }, [searchParams, handleCodeComplete]);
