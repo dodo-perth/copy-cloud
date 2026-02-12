@@ -26,6 +26,9 @@ const SITE_DESCRIPTION =
   "Instantly share text, links, images, and more between devices. Paste anything and get a 6-digit code or QR — no sign-up required. Content auto-expires in 5 minutes for privacy.";
 
 export const metadata: Metadata = {
+  verification: {
+    google: "yLq1hH6HPMvSx9JOM_i1QHUQSlCy-9V0-sAU0BVMsFI",
+  },
   title: {
     default: `${SITE_NAME} — Instant Copy & Paste Across Devices`,
     template: `%s | ${SITE_NAME}`,
