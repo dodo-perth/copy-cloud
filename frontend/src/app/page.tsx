@@ -203,11 +203,22 @@ function HomeInner() {
 
   return (
     <main className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-12">
+      {/* SEO: visually hidden heading for crawlers */}
+      <h1 className="sr-only">
+        Copy Cloud — Instant Copy &amp; Paste Across Devices
+      </h1>
+      <p className="sr-only">
+        Share text, links, YouTube videos, Google Maps addresses, and images
+        between your phone and computer instantly. Get a 6-digit code or QR
+        code — no account needed. Content auto-expires in 5 minutes.
+      </p>
+
       <div className="w-full max-w-md space-y-5">
         {/* === IDLE / UPLOADING STATE === */}
         {(appState === "idle" || appState === "uploading") && (
           <>
             {/* Paste Area */}
+            <section aria-label="Share content">
             <Card className="p-0 overflow-hidden">
               <div
                 className="relative"
@@ -298,9 +309,10 @@ function HomeInner() {
                 </div>
               </div>
             </Card>
+            </section>
 
             {/* Divider */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4" role="separator">
               <Separator className="flex-1" />
               <span className="text-xs text-muted-foreground font-medium">
                 {t("or_receive")}
@@ -309,6 +321,7 @@ function HomeInner() {
             </div>
 
             {/* Code Input */}
+            <section aria-label="Receive content">
             <Card className="p-6">
               <div className="space-y-4">
                 <div className="flex items-center gap-2 justify-center">
@@ -322,6 +335,7 @@ function HomeInner() {
                     maxLength={6}
                     value={codeInput}
                     inputMode="text"
+                    aria-label="6-digit sharing code"
                     onChange={(val) => {
                       setCodeInput(val.toUpperCase());
                       if (val.length === 6) {
@@ -342,6 +356,7 @@ function HomeInner() {
                 </div>
               </div>
             </Card>
+            </section>
           </>
         )}
 
@@ -468,17 +483,44 @@ function HomeInner() {
           </Card>
         )}
 
-        <p className="text-center text-xs text-muted-foreground/40">
-          {t("expires_footer")}
-        </p>
+        <footer className="text-center">
+          <p className="text-xs text-muted-foreground/40">
+            {t("expires_footer")}
+          </p>
+        </footer>
 
-        {/* AdSense - replace ca-pub-XXX and ad slot with your own */}
+        {/* AdSense */}
         <AdSense
           adClient="ca-pub-2563278096701182"
           adSlot="7587477132"
           className="mt-4"
         />
       </div>
+
+      {/* SEO: noscript fallback for crawlers */}
+      <noscript>
+        <div style={{ padding: "2rem", textAlign: "center" }}>
+          <h2>Copy Cloud — Instant Copy &amp; Paste Across Devices</h2>
+          <p>
+            Copy Cloud lets you instantly share text, links, YouTube videos,
+            Google Maps addresses, and images between any devices. Simply paste
+            your content to get a 6-digit code or QR code. No account or
+            installation needed — content automatically expires after 5 minutes
+            for your privacy and security.
+          </p>
+          <h3>Features</h3>
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            <li>Instant text, link, and image sharing</li>
+            <li>6-digit code for quick access</li>
+            <li>QR code for mobile scanning</li>
+            <li>YouTube link detection with preview</li>
+            <li>Google Maps address detection</li>
+            <li>Secure mode with encrypted hash URL</li>
+            <li>Auto-expires in 5 minutes</li>
+            <li>No sign-up required</li>
+          </ul>
+        </div>
+      </noscript>
     </main>
   );
 }
