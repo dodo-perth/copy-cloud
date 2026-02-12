@@ -1,18 +1,14 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import {
   CloudUpload,
   Clipboard,
@@ -54,6 +50,7 @@ export default function Home() {
   const [codeCopied, setCodeCopied] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const searchParams = useSearchParams();
 
   const showPlaceholder = !pasteText && !isFocused;
 
@@ -155,6 +152,14 @@ export default function Home() {
       setCodeInput("");
     }
   }, []);
+
+  useEffect(() => {
+    const initialCode = searchParams.get("code");
+    if (initialCode && initialCode.length === 6) {
+      setCodeInput(initialCode.toUpperCase());
+      handleCodeComplete(initialCode);
+    }
+  }, [searchParams, handleCodeComplete]);
 
   const handleCopyCode = useCallback(async () => {
     if (!sharedRoom) return;
@@ -304,8 +309,8 @@ export default function Home() {
                 <div className="flex justify-center">
                   <InputOTP
                     maxLength={6}
-                    pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
                     value={codeInput}
+                    inputMode="text"
                     onChange={(val) => {
                       setCodeInput(val.toUpperCase());
                       if (val.length === 6) {
